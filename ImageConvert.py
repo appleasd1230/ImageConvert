@@ -73,6 +73,33 @@ def read_image_with_chinese_filename(image_path: str) -> numpy.ndarray:
     
     return img
   
+def auto_convert_best_size(img: bytes, width = None: str, height = None: str, inter = cv2.INTER_AREA) -> numpy.ndarray:
+    """Auto resize image with the best width and height which not reduce too much DPI.
+       Give width or height to auto calculate the best other widht or heigth.
+       If give both the width and height, it will return the size you decide.
+       if not give any, return the origin image.
+    """
+    if width == '':
+        width = None
+    if height == '':
+        height = None
 
-    
-    
+    dim = None
+    (h, w) = image.shape[:2]
+
+    if width is None and height is None:
+        return image
+
+    if width is not None and height is not None:
+        resized = cv2.resize(image, (width, height), interpolation = inter)
+        return resized    
+
+    if width is None:
+        r = int(height) / float(h)
+        dim = (int(w * r), int(height))
+    else:
+        r = int(width) / float(w)
+        dim = (int(width), int(h * r))
+
+    img = cv2.resize(image, dim, interpolation = inter)
+    return img
