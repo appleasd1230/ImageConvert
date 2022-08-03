@@ -1,4 +1,4 @@
-# ImageConvert - O
+# ImageConvert - OpenCV
 
 ### Some image convert function.
 
